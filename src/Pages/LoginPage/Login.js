@@ -6,26 +6,30 @@ import { useContext, useState } from "react";
 // TODO remove, this demo shouldn't need to reset the theme.
 
 export default function Login() {
-  const { getUserData, userData, navigate } = useContext(GlobalContext);
+  const { setUserData, userData, navigate } = useContext(GlobalContext);
   const [username, setUsername] = useState("nishit101");
-  const [password, setPassword] = useState("1234");
+  const [password, setPassword] = useState("");
 
   const handleSubmit = (event) => {
+
     event.preventDefault();
-    let data = new FormData(event.currentTarget);
-    let email = data.get("email");
-    let password = data.get("password");
     let userData = credentials.find(
       (credential) =>
-        credential.username === email && credential.password === password
+        credential.username === username && credential.password === password
     );
-    data = {
-      ...userData
-    };
-    getUserData(data);
-    navigate("/");
+    console.log(userData, credentials, username, password)
+    if(userData){
+      let data={
+        username: userData.username,
+        name: userData.name
+      }
+      localStorage.setItem("userData", JSON.stringify({data}))
+      setUserData(data);
+      
+      navigate("/");
+    }
   };
-  console.log(userData);
+  console.log( credentials, username, password)
 
   return (
     <Container component="main" maxWidth="xs">
@@ -57,7 +61,6 @@ export default function Login() {
             label="Password"
             type="password"
             id="password"
-            autoComplete="current-password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           />

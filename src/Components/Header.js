@@ -14,14 +14,26 @@ import {
 import { useContext, useState } from "react";
 import { GlobalContext } from "../context/GlobalContext";
 import MenuIcon from "@mui/icons-material/Menu";
+import { useLocation } from "react-router-dom";
 
-const pages = ["Blog"];
+const pages = [
+  {
+    title: "Products",
+    path: "/"  
+  },
+  {
+    title: "Carts",
+    path: "/cart"  
+  }
+];
 const settings = ["Profile", "Logout"];
 
 function Header() {
   const [anchorElNav, setAnchorElNav] = useState(null);
   const [anchorElUser, setAnchorElUser] = useState(null);
-  const { userLogout } = useContext(GlobalContext);
+  const { userLogout, navigate } = useContext(GlobalContext);
+  const location = useLocation();
+  console.log(location.pathname)
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
@@ -30,7 +42,8 @@ function Header() {
     setAnchorElUser(event.currentTarget);
   };
 
-  const handleCloseNavMenu = () => {
+  const handleCloseNavMenu = (e, path) => {
+    navigate(path)
     setAnchorElNav(null);
   };
 
@@ -50,7 +63,7 @@ function Header() {
             variant="h6"
             noWrap
             component="a"
-            href="/"
+            onClick={()=>navigate('/')}
             sx={{
               mr: 2,
               display: { xs: "none", md: "flex" },
@@ -93,9 +106,9 @@ function Header() {
                 display: { xs: "block", md: "none" }
               }}
             >
-              {pages.map((page) => (
-                <MenuItem key={page} onClick={handleCloseNavMenu}>
-                  <Typography textAlign="center">{page}</Typography>
+              {pages.map((page, index) => (
+                <MenuItem key={index} onClick={(e)=>handleCloseNavMenu(e,page.path)} selected={location.pathname===page.path} >
+                  <Typography textAlign="center">{page.title}</Typography>
                 </MenuItem>
               ))}
             </Menu>
@@ -119,13 +132,14 @@ function Header() {
             LOGO
           </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
-            {pages.map((page) => (
+            {pages.map((page, index) => (
               <Button
-                key={page}
-                onClick={handleCloseNavMenu}
+                key={index}
+                onClick={(e)=>handleCloseNavMenu(e,page.path)}
                 sx={{ my: 2, color: "white", display: "block" }}
+                style={location.pathname===page.path ? {borderRadius: 0, borderBottom: "3px solid white" } : {}}
               >
-                {page}
+                {page.title}
               </Button>
             ))}
           </Box>

@@ -1,17 +1,25 @@
-export const globalReducer = (state, action) => {
-  switch (action.type) {
-    case "GET_USER_DATA":
+export const globalReducer = (state, {type, payload}) => {
+  switch (type) {
+    case "SET_USER_DATA":
       return {
         ...state,
-        userData: action.payload,
-        isLogedIn: true
+        userData: payload
       };
     case "USER_LOGOUT":
       return {
         ...state,
-        userData: undefined,
-        isLogedIn: false
+        userData: undefined
       };
+    case "SET_PRODUCTS_DATA":
+      return {
+        ...state,
+        products: payload
+      }
+    case "UPDATE_CART":
+      return {
+        ...state,
+        cartProducts: payload
+      }
     default:
       return state;
   }
