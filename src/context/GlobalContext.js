@@ -24,19 +24,6 @@ const GlobalState = ({ children }) => {
 
 
   const getProductsData = () => {
-    // if(localStorage.getItem("products")){
-    //   try {
-    //     let data = JSON.parse(localStorage.getItem("products")) 
-    //     dispatch({
-    //       type: "SET_PRODUCTS_DATA",
-    //       payload: data
-    //     })
-    //   } catch {
-    //     getProductsDataFromJson()
-    //   }
-    // } else {
-    //   getProductsDataFromJson()
-    // }
     fetch("./products.json", {
       headers: {
         "Content-Type": "application/json",
@@ -47,8 +34,6 @@ const GlobalState = ({ children }) => {
         return response.json();
       })
       .then(function (myJson) {
-        // console.log(myJson);
-        localStorage.setItem("products", JSON.stringify(myJson))
         dispatch({
           type: "SET_PRODUCTS_DATA",
           payload: myJson
