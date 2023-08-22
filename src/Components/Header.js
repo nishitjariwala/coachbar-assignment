@@ -1,6 +1,7 @@
 import {
   AppBar,
   Avatar,
+  Badge,
   Box,
   Button,
   Container,
@@ -19,11 +20,11 @@ import { useLocation } from "react-router-dom";
 const pages = [
   {
     title: "Products",
-    path: "/"  
+    path: "/"
   },
   {
-    title: "Carts",
-    path: "/cart"  
+    title: "Cart",
+    path: "/cart"
   }
 ];
 const settings = ["Profile", "Logout"];
@@ -31,9 +32,8 @@ const settings = ["Profile", "Logout"];
 function Header() {
   const [anchorElNav, setAnchorElNav] = useState(null);
   const [anchorElUser, setAnchorElUser] = useState(null);
-  const { userLogout, navigate } = useContext(GlobalContext);
+  const { userLogout, navigate, cartProducts } = useContext(GlobalContext);
   const location = useLocation();
-  console.log(location.pathname)
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
@@ -63,7 +63,7 @@ function Header() {
             variant="h6"
             noWrap
             component="a"
-            onClick={()=>navigate('/')}
+            onClick={() => navigate('/')}
             sx={{
               mr: 2,
               display: { xs: "none", md: "flex" },
@@ -107,8 +107,11 @@ function Header() {
               }}
             >
               {pages.map((page, index) => (
-                <MenuItem key={index} onClick={(e)=>handleCloseNavMenu(e,page.path)} selected={location.pathname===page.path} >
+                <MenuItem key={index} onClick={(e) => handleCloseNavMenu(e, page.path)} selected={location.pathname === page.path} >
                   <Typography textAlign="center">{page.title}</Typography>
+                  {
+                    cartProducts.length && page.path === "/cart" ? <span style={{ marginLeft: 5 }}>({cartProducts.length})</span> : null
+                  }
                 </MenuItem>
               ))}
             </Menu>
@@ -135,17 +138,21 @@ function Header() {
             {pages.map((page, index) => (
               <Button
                 key={index}
-                onClick={(e)=>handleCloseNavMenu(e,page.path)}
+                onClick={(e) => handleCloseNavMenu(e, page.path)}
                 sx={{ my: 2, color: "white", display: "block" }}
-                style={location.pathname===page.path ? {borderRadius: 0, borderBottom: "3px solid white" } : {}}
+                style={location.pathname === page.path ? { borderRadius: 0, borderBottom: "3px solid white" } : {}}
               >
                 {page.title}
+                {
+                  cartProducts.length && page.path === "/cart" ? <span style={{ marginLeft: 5 }}>({cartProducts.length})</span> : null
+                }
               </Button>
             ))}
           </Box>
-
           <Box sx={{ flexGrow: 0 }}>
-            <Tooltip title="Open settings">
+          <Button  sx={{ my: 2, color: "white", border: '2px solid white'}} onClick={()=>userLogout()}>Log out</Button>
+
+            {/* <Tooltip title="Open settings">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
                 <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
               </IconButton>
@@ -175,7 +182,7 @@ function Header() {
                   <Typography textAlign="center">{setting}</Typography>
                 </MenuItem>
               ))}
-            </Menu>
+            </Menu> */}
           </Box>
         </Toolbar>
       </Container>

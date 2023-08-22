@@ -52,6 +52,7 @@ const GlobalState = ({ children }) => {
   }
 
   const userLogout = (data) => {
+    localStorage.clear()
     dispatch({
       type: "USER_LOGOUT"
     });

@@ -7,29 +7,35 @@ import { useContext, useState } from "react";
 
 export default function Login() {
   const { setUserData, userData, navigate } = useContext(GlobalContext);
-  const [username, setUsername] = useState("nishit101");
+  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState('');
 
   const handleSubmit = (event) => {
-
     event.preventDefault();
-    let userData = credentials.find(
-      (credential) =>
-        credential.username === username && credential.password === password
-    );
-    console.log(userData, credentials, username, password)
-    if(userData){
-      let data={
-        username: userData.username,
-        name: userData.name
+    if (username.trim() === '' || password.trim() === '') {
+      setError('Please fill in all fields.');
+    } else {
+      let userData = credentials.find(
+        (credential) =>
+          credential.username === username && credential.password === password
+      );
+      if (userData) {
+        let data = {
+          username: userData.username,
+          name: userData.name
+        }
+        localStorage.setItem("userData", JSON.stringify({ data }))
+        setUserData(data);
+
+        navigate("/");
+      } else {
+        setError('Invalid username or password.');
       }
-      localStorage.setItem("userData", JSON.stringify({data}))
-      setUserData(data);
-      
-      navigate("/");
     }
+
+
   };
-  console.log( credentials, username, password)
 
   return (
     <Container component="main" maxWidth="xs">
@@ -53,6 +59,8 @@ export default function Login() {
             name="username"
             value={username}
             onChange={(e) => setUsername(e.target.value)}
+            error={error && username.trim() === ''}
+            helperText={error && username.trim() === '' && 'Username is required'}
           />
           <TextField
             margin="normal"
@@ -63,7 +71,10 @@ export default function Login() {
             id="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
+            error={error && password.trim() === ''}
+            helperText={error && password.trim() === '' && 'Password is required'}
           />
+          {error && <Typography color="error">{error}</Typography>}
           <Button
             type="submit"
             fullWidth

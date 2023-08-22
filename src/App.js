@@ -62,3 +62,19 @@ export default function App() {
     </div>
   );
 }
+
+// let userData = credentials.find(
+//       (credential) =>
+//         credential.username === username && credential.password === password
+//     );
+//     console.log(userData, credentials, username, password)
+//     if(userData){
+//       let data={
+//         username: userData.username,
+//         name: userData.name
+//       }
+//       localStorage.setItem("userData", JSON.stringify({data}))
+//       setUserData(data);
+      
+//       navigate("/");
+//     }
