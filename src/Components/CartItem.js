@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import {
   ListItem,
   ListItemText,
@@ -9,10 +9,12 @@ import {
 } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import QuantityButton from './QuantityButton';
+import { GlobalContext } from '../context/GlobalContext';
 
-const CartItem = ({ cartItem, updateCartItemQuantity, removeCartItem, product }) => {
+const CartItem = ({ cartItem, product }) => {
   const { id, quantity } = cartItem;
   const { title, price, setSize, stock } = product;
+  const {updateCart, cartProducts} = useContext(GlobalContext)
 
   return (
     <ListItem key={id} disableGutters>
@@ -22,7 +24,7 @@ const CartItem = ({ cartItem, updateCartItemQuantity, removeCartItem, product })
       />
       <QuantityButton productInCart={cartItem} product={product} /> 
       <ListItemSecondaryAction>
-        <IconButton edge="end" onClick={()=>console.log("Delete")}>
+        <IconButton edge="end" onClick={()=>updateCart(cartProducts.filter(product=>product.id!==id))}>
           <DeleteIcon />
         </IconButton>
       </ListItemSecondaryAction>

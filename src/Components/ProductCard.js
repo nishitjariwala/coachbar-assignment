@@ -3,11 +3,8 @@ import {
     Card,
     CardContent,
     CardActions,
-    Typography,
-    Button,
-    ButtonGroup,
+    Typography
 } from '@mui/material';
-import { Badge } from '@mui/material';
 import { Carousel } from 'react-responsive-carousel';
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
 import QuantityButton from './QuantityButton';
@@ -28,17 +25,6 @@ const ProductCard = ({ product }) => {
                             alt={`${title} - ${index}`}
                             style={{ maxHeight: '200px', width: 'auto' }}
                         />
-                        {stock > 0 && stock < 5 && (
-                            <Badge
-                                color="error"
-                                badgeContent={`${stock} left!`}
-                                style={{
-                                    position: 'absolute',
-                                    top: '20px',
-                                    left: '20px',
-                                }}
-                            ></Badge>
-                        )}
                     </div>
                 ))}
             </Carousel>
@@ -50,8 +36,10 @@ const ProductCard = ({ product }) => {
                 <Typography variant="body2">Set Size: {setSize}</Typography>
             </CardContent>
             <CardActions style={{ justifyContent: 'space-between' }}>
-            <div>sfgs</div>
-            <QuantityButton productInCart={productInCart} product={product} />
+                {stock > 0 && stock < 5 ? <Typography variant="body2" color="error">
+                {`Only ${stock} left!`}
+                </Typography> : <div />}
+                <QuantityButton productInCart={productInCart} product={product} />
             </CardActions>
         </Card>
     );

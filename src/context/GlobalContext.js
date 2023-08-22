@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 
 const initState = {
   todos: [],
-  userData: undefined,
+  userData: localStorage.getItem("userCart") ? JSON.parse(localStorage.getItem("userCart")) : undefined,
   isLogedIn: false,
   products: [],
   cartProducts: []
@@ -43,7 +43,7 @@ const GlobalState = ({ children }) => {
   }
 
 
-  const updateCart = (data, products) => {
+  const updateCart = (data) => {
     localStorage.setItem("userCart", JSON.stringify(data))
     dispatch({
       type: "UPDATE_CART",
@@ -54,7 +54,8 @@ const GlobalState = ({ children }) => {
   const userLogout = (data) => {
     localStorage.clear()
     dispatch({
-      type: "USER_LOGOUT"
+      type: "USER_LOGOUT",
+      payload: initState
     });
   };
 

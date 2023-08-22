@@ -32,7 +32,7 @@ const settings = ["Profile", "Logout"];
 function Header() {
   const [anchorElNav, setAnchorElNav] = useState(null);
   const [anchorElUser, setAnchorElUser] = useState(null);
-  const { userLogout, navigate, cartProducts } = useContext(GlobalContext);
+  const { userLogout, navigate, cartProducts, userData } = useContext(GlobalContext);
   const location = useLocation();
 
   const handleOpenNavMenu = (event) => {
@@ -149,7 +149,8 @@ function Header() {
               </Button>
             ))}
           </Box>
-          <Box sx={{ flexGrow: 0 }}>
+          <Box sx={{ flexGrow: 0, display: "flex", alignItems: "center" }}>
+          <Typography style={{padding: 10}}>Welcome {userData.name}!</Typography>
           <Button  sx={{ my: 2, color: "white", border: '2px solid white'}} onClick={()=>userLogout()}>Log out</Button>
 
             {/* <Tooltip title="Open settings">

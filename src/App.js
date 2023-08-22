@@ -8,10 +8,9 @@ import ShoppingCart from "./Pages/ShoppingCartPage/Shoppingcart";
 import Products from "./Pages/ProductPage/Products";
 
 export default function App() {
-  const { userData, navigate, setUserData, updateCart, userLogout } = useContext(GlobalContext);
+  const { userData, setUserData, updateCart, userLogout } = useContext(GlobalContext);
   const [isLogedIn, setIsLoggedIn] = useState(!!localStorage.getItem("userData"))
   useEffect(()=>{
-    console.log(localStorage.getItem("userData"), "dskjgskdjhgkjsdhg")
     if(localStorage.getItem("userData")){
       try{
         setUserData(JSON.parse(localStorage.getItem("userData")))
@@ -23,6 +22,7 @@ export default function App() {
     }
     if(localStorage.getItem("userCart")){
       try{
+        console.log(JSON.parse(localStorage.getItem("userCart")))
         updateCart(JSON.parse(localStorage.getItem("userCart")))
       } catch {
         localStorage.removeItem("userCart")
@@ -62,19 +62,3 @@ export default function App() {
     </div>
   );
 }
-
-// let userData = credentials.find(
-//       (credential) =>
-//         credential.username === username && credential.password === password
-//     );
-//     console.log(userData, credentials, username, password)
-//     if(userData){
-//       let data={
-//         username: userData.username,
-//         name: userData.name
-//       }
-//       localStorage.setItem("userData", JSON.stringify({data}))
-//       setUserData(data);
-      
-//       navigate("/");
-//     }

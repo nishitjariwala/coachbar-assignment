@@ -13,7 +13,6 @@ const QuantityButton = (props) => {
     if (newQuantity >= 0 && newQuantity <= stock && newQuantity % setSize === 0) {
       setQuantity(newQuantity);
       if (productInCart && newQuantity === 0) {
-        // setIsAddingToCart(false)
         const updatedCartProducts = cartProducts.filter((item) => item.id !== id);
         updateCart(updatedCartProducts)
       } else {

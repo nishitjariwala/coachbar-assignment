@@ -1,14 +1,11 @@
 import { GlobalContext } from "../../context/GlobalContext";
-import { credentials, roles } from "../../Data/credentials";
 import { Box, Button, Container, TextField, Typography } from "@mui/material";
 import { useContext, useState } from "react";
 
-// TODO remove, this demo shouldn't need to reset the theme.
-
 export default function Login() {
   const { setUserData, userData, navigate } = useContext(GlobalContext);
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
+  const [username, setUsername] = useState("nishit.jariwala");
+  const [password, setPassword] = useState("123456");
   const [error, setError] = useState('');
 
   const handleSubmit = (event) => {
@@ -16,22 +13,36 @@ export default function Login() {
     if (username.trim() === '' || password.trim() === '') {
       setError('Please fill in all fields.');
     } else {
-      let userData = credentials.find(
-        (credential) =>
-          credential.username === username && credential.password === password
-      );
-      if (userData) {
-        let data = {
-          username: userData.username,
-          name: userData.name
+      fetch("./users.json", {
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json"
         }
-        localStorage.setItem("userData", JSON.stringify({ data }))
-        setUserData(data);
-
-        navigate("/");
-      } else {
-        setError('Invalid username or password.');
-      }
+      })
+        .then(function (response) {
+          return response.json();
+        })
+        .then(function (data) {
+          let userData = data.find(
+            (credential) =>
+              credential.username === username && credential.password === password
+          );
+          console.log("Here")
+          if (userData) {
+            let data = {
+              username: userData.username,
+              name: userData.name
+            }
+            localStorage.setItem("userData", JSON.stringify(data))
+            setUserData(data);
+            navigate("/");
+          } else {
+            setError('Invalid username or password.');
+          }
+        }).catch(e=>{
+          console.log(e)
+        });
+      
     }
 
 

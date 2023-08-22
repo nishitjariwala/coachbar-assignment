@@ -6,10 +6,7 @@ export const globalReducer = (state, {type, payload}) => {
         userData: payload
       };
     case "USER_LOGOUT":
-      return {
-        ...state,
-        userData: undefined
-      };
+      return payload;
     case "SET_PRODUCTS_DATA":
       return {
         ...state,
